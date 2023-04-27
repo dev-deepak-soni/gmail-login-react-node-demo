@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import logo from '../images/amw_logo_2.png'
 
 const Signup = () => {
     return (
@@ -30,7 +31,7 @@ const Signup = () => {
                                             <div className="text-center">
                                                 <img
                                                     className="mx-auto w-48"
-                                                    src="https://amwebtech.com/assets/image/AMW_Logo.svg"
+                                                    src={logo}
                                                     alt="logo" />
                                                 <h4 className="mb-12 mt-1 pb-1 text-xl font-semibold">
                                                     The One-Stop Destination For End To End SaaS Products Development

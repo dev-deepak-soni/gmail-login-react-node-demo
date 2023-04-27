@@ -1,12 +1,37 @@
 import { Link } from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import logo from '../images/amw_logo_2.png'
 
 const Login = () => {
+    const handleSignupWithGoogle = () => {
+        window.location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id='+process.env.REACT_APP_GOOGLE_CLIENT_ID+'&response_type=code&scope=openid%20email%20profile&redirect_uri='+process.env.REACT_APP_GOOGLE_CALLBACK_URL+'&state=mp';
+    }
+    const backendApi = process.env.REACT_APP_API_URL;
+
+
+    const postData = async (url = "", data = {}) => {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, *cors, same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: "follow", // manual, *follow, error
+            referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+
     return (
         <>
             <Formik
-                initialValues={{ username: '', password: ''}}
+                initialValues={{ username: '', password: '' }}
                 validationSchema={Yup.object({
                     username: Yup.string()
                         .max(15, 'Must be 15 characters or less')
@@ -16,10 +41,11 @@ const Login = () => {
                         .required('Required')
                 })}
                 onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                    }, 400);
+
+                    postData(backendApi + 'forgetpass', { answer: 42 }).then((data) => {
+                        console.log(data); // JSON data parsed by `data.json()` call
+                    });
+
                 }}
             >
                 <section className="gradient-form h-full bg-neutral-200 dark:bg-neutral-700">
@@ -35,10 +61,21 @@ const Login = () => {
                                                 <div className="text-center">
                                                     <img
                                                         className="mx-auto w-48"
-                                                        src="https://amwebtech.com/assets/image/AMW_Logo.svg"
+                                                        src={logo}
                                                         alt="logo" />
                                                     <h4 className="mb-12 mt-1 pb-1 text-xl font-semibold">
-                                                        The One-Stop Destination For End To End SaaS Products Development
+                                                        <button
+                                                            className="rounded px-6 pb-2 pt-2.5 text-xs  leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
+                                                            type="submit"
+                                                            data-te-ripple-init
+                                                            data-te-ripple-color="light"
+                                                            onClick={handleSignupWithGoogle}
+                                                            style={{
+                                                                background: 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'
+                                                            }}
+                                                        >
+                                                            Sign In Using Google
+                                                        </button>
                                                     </h4>
                                                 </div>
 
@@ -50,13 +87,13 @@ const Login = () => {
                                                             className="peer block min-h-[auto] w-full rounded border border-black bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                             id="username"
                                                             placeholder="username"
-                                                            name="Username" />                                                            
+                                                            name="username" />
                                                         <label
                                                             htmlFor="username"
                                                             className=""
                                                         >Username
                                                         </label>
-                                                        
+
                                                     </div>
                                                     <ErrorMessage name="username" />
                                                     <div className="relative mb-4" data-te-input-wrapper-init>
@@ -64,13 +101,13 @@ const Login = () => {
                                                             type="password"
                                                             className="peer block min-h-[auto] w-full rounded border border-black bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                             id="password"
-                                                            placeholder="Password" 
-                                                            name="password" />                                                            
+                                                            placeholder="Password"
+                                                            name="password" />
                                                         <label
                                                             htmlFor="password"
                                                             className=""
                                                         >Password
-                                                        </label>                                                        
+                                                        </label>
                                                     </div>
                                                     <ErrorMessage name="password" />
                                                     <div className="mb-12 pb-1 pt-1 text-center">
