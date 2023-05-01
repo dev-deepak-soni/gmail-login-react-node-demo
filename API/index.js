@@ -15,6 +15,8 @@ const login = require('./router/Login');
 const loginWithGoogle = require('./router/LoginWithGoogle');
 const googlelogin = require('./router/GoogleLogin');
 
+app.use(express.json());
+
 app.use('/', login)
 app.use('/forgetpass', login)
 app.use('/loginwithgoogle', loginWithGoogle)

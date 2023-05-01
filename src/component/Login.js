@@ -4,25 +4,17 @@ import * as Yup from 'yup';
 import logo from '../images/amw_logo_2.png'
 
 const Login = () => {
-    const handleSignupWithGoogle = () => {
-        window.location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id='+process.env.REACT_APP_GOOGLE_CLIENT_ID+'&response_type=code&scope=openid%20email%20profile&redirect_uri='+process.env.REACT_APP_GOOGLE_CALLBACK_URL+'&state=mp';
-    }
+    
+    // const handleSignupWithGoogle = () => {
+    //     console.log('handleSignupWithGoogle');
+    // }
     const backendApi = process.env.REACT_APP_API_URL;
 
 
     const postData = async (url = "", data = {}) => {
         // Default options are marked with *
         const response = await fetch(url, {
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
-            mode: "cors", // no-cors, *cors, same-origin
-            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: "same-origin", // include, *same-origin, omit
-            headers: {
-                "Content-Type": "application/json",
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: "follow", // manual, *follow, error
-            referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            method: "POST", 
             body: JSON.stringify(data), // body data type must match "Content-Type" header
         });
         return response.json(); // parses JSON response into native JavaScript objects
@@ -42,7 +34,7 @@ const Login = () => {
                 })}
                 onSubmit={(values, { setSubmitting }) => {
 
-                    postData(backendApi + 'forgetpass', { answer: 42 }).then((data) => {
+                    postData(backendApi, { data: values }).then((data) => {
                         console.log(data); // JSON data parsed by `data.json()` call
                     });
 
@@ -67,9 +59,9 @@ const Login = () => {
                                                         <button
                                                             className="rounded px-6 pb-2 pt-2.5 text-xs  leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
                                                             type="submit"
+                                                            id='buttonDiv'
                                                             data-te-ripple-init
                                                             data-te-ripple-color="light"
-                                                            onClick={handleSignupWithGoogle}
                                                             style={{
                                                                 background: 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'
                                                             }}

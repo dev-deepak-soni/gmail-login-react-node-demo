@@ -2,21 +2,27 @@ const express = require('express')
 const router = express.Router()
 const { OAuth2Client } = require('google-auth-library');
 
-// define the home page route
+
+const bodyParser = require('body-parser');
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+
+
 router.get('/', async (req, res) => {
     const { code } = req.query;
     const data = await getGoogleIdToken(code);
     const result = verifyIdToken(data);
-    console.log('result', result);
-    if(result){
-        res.redirect('http://localhost:3000/dashboard/');
-    }
-    
+
 })
 
-router.get('/signout', (req, res) => {
-    res.json({status: 200, success : true , msg : 'User Signed Out Successfully'})
-})
+router.post('/verify', async (req, res) => {
+    console.log('verify worked', req.body);
+    const { token } = req.body;
+    const result = await verifyIdToken(token);
+    console.log('result', result);
+    res.status(200).json({success:true, data: result, redirect : 'http://localhost:3000/dashboard'});
+  });
+  
 
 const getClient = () => {
     const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -33,7 +39,7 @@ const getGoogleIdToken = async (code) => {
     return idToken;
 };
 
-async function verifyIdToken(idToken) {
+const verifyIdToken = async (idToken) => {
     const client = getClient()
 
     try {
