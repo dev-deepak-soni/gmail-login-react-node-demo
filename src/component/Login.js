@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import logo from '../images/amw_logo_2.png'
 
 const Login = () => {
-    
+
     // const handleSignupWithGoogle = () => {
     //     console.log('handleSignupWithGoogle');
     // }
@@ -14,7 +14,7 @@ const Login = () => {
     const postData = async (url = "", data = {}) => {
         // Default options are marked with *
         const response = await fetch(url, {
-            method: "POST", 
+            method: "POST",
             body: JSON.stringify(data), // body data type must match "Content-Type" header
         });
         return response.json(); // parses JSON response into native JavaScript objects
@@ -27,10 +27,10 @@ const Login = () => {
                 validationSchema={Yup.object({
                     username: Yup.string()
                         .max(15, 'Must be 15 characters or less')
-                        .required('Required'),
+                        .required('Username is a required field.'),
                     password: Yup.string()
                         .max(20, 'Must be 20 characters or less')
-                        .required('Required')
+                        .required('Password is a required field.')
                 })}
                 onSubmit={(values, { setSubmitting }) => {
 
@@ -85,9 +85,11 @@ const Login = () => {
                                                             className=""
                                                         >Username
                                                         </label>
-
+                                                        <div className='text-sm font-bold text-red-600' >
+                                                        <ErrorMessage name="username" />
                                                     </div>
-                                                    <ErrorMessage name="username" />
+                                                    </div>
+                                                   
                                                     <div className="relative mb-4" data-te-input-wrapper-init>
                                                         <Field
                                                             type="password"
@@ -100,8 +102,11 @@ const Login = () => {
                                                             className=""
                                                         >Password
                                                         </label>
+                                                        <div className='text-sm font-bold text-red-600' >
+                                                        <ErrorMessage name="password" />
                                                     </div>
-                                                    <ErrorMessage name="password" />
+                                                    </div>
+                                                    
                                                     <div className="mb-12 pb-1 pt-1 text-center">
                                                         <button
                                                             className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
